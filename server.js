@@ -10,7 +10,11 @@ const io = require('socket.io')(server, {
 
 app.use(express.json());
 // app.use(express.urlencoded({ extended: true })); для query
+app.use(express.static(__dirname + "/public"));
 
+app.get('/', function(request, response) {
+  response.sendFile(path.resolve(__dirname, '/public', 'index.html'));
+});
 const rooms = new Map();
 
 app.get('/rooms/:id', (req, res) => {
@@ -67,7 +71,7 @@ io.on('connection', (socket) => {
   console.log(socket.handshake.address)
 });
 
-server.listen(9999, (err) => {
+server.listen(process.env.PORT || 3000, (err) => {
   if (err) {
     throw Error(err);
   }
