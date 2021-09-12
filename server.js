@@ -10,10 +10,10 @@ const io = require('socket.io')(server, {
 
 app.use(express.json());
 // app.use(express.urlencoded({ extended: true })); для query
-app.use(express.static(__dirname + "/public"));
+app.use(express.static(__dirname + "/build"));
 
 app.get('/', function(request, response) {
-  response.sendFile(path.resolve(__dirname, '/public', 'index.html'));
+  response.sendFile(path.resolve(__dirname, '/build', 'index.html'));
 });
 const rooms = new Map();
 
