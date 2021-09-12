@@ -4,22 +4,27 @@ import socket from './socket';
 
 function Chat({ users, messages, userName, roomId, onAddMessage }) {
   const [messageValue, setMessageValue] = React.useState('');
+  const [placeholder, setPlaceholder] = React.useState('')
 
   const onSendMessage = () => {
-    socket.emit('roomNewMessage', {
-      roomId,
-      userName,
-      text: messageValue,
-    });
-    onAddMessage({
-      userName,
-      text: messageValue,
-    });
-    setMessageValue('');
+    if (messageValue.trim()){
+      socket.emit('roomNewMessage', {
+        roomId,
+        userName,
+        text: messageValue,
+      });
+      onAddMessage({
+        userName,
+        text: messageValue,
+      });
+      setMessageValue('');
+    }
+
   };
   const sortMessages = (messages) => {
     if (messages.length > 7){
-      return messages.splice(0,1)
+      messages.splice(0,1)
+      return messages
     } else {
       return messages
     }
@@ -57,7 +62,7 @@ function Chat({ users, messages, userName, roomId, onAddMessage }) {
             value={messageValue}
             onChange={(e) => setMessageValue(e.target.value)}
             type="text"
-            placeholder="Enter your message"
+            placeholder={placeholder || 'Enter your message'}
           />
         </form>
       </div>
